@@ -1,7 +1,7 @@
 // import React from 'react';
 // import logo from './logo.svg';
 // import { Counter } from './features/counter/Counter';
-import { Configure } from './components/configurator/configurator'
+import { Configure } from './components/configuratorView/configurator'
 import './App.css';
 
 function App() {

@@ -3,6 +3,12 @@ var initState={
       [
         {
           "viewIndex": 1,
+          "compId": 0,
+          "defautChoice": "",
+          "imgFileName": "v1_sconstants.png"
+        },
+        {
+          "viewIndex": 1,
           "compId": 1,
           "defautChoice": "",
           "imgFileName": "v1_sg1.png"
@@ -146,7 +152,12 @@ var initState={
           "imgFileName": "v1_sg24.png"
         }
       ],
-      [
+      [        {
+        "viewIndex": 2,
+        "compId": 0,
+        "defautChoice": "",
+        "imgFileName": "v2_sconstants.png"
+      },
         {
           "viewIndex": 2,
           "compId": 1,
@@ -295,6 +306,12 @@ var initState={
       [
         {
           "viewIndex": 3,
+          "compId": 0,
+          "defautChoice": "",
+          "imgFileName": "v3_sconstants.png"
+        },
+        {
+          "viewIndex": 3,
           "compId": 1,
           "defautChoice": "",
           "imgFileName": "v3_sg1.png"
@@ -438,7 +455,12 @@ var initState={
           "imgFileName": "v3_sg24.png"
         }
       ],
-      [
+      [        {
+        "viewIndex": 4,
+        "compId": 0,
+        "defautChoice": "",
+        "imgFileName": "v4_sconstants.png"
+      },
         {
           "viewIndex": 4,
           "compId": 1,
@@ -584,7 +606,12 @@ var initState={
           "imgFileName": "v4_sg24.png"
         }
       ],
-      [
+      [        {
+        "viewIndex": 5,
+        "compId": 0,
+        "defautChoice": "",
+        "imgFileName": "v5_sconstants.png"
+      },
         {
           "viewIndex": 5,
           "compId": 1,
@@ -730,7 +757,12 @@ var initState={
           "imgFileName": "v5_sg24.png"
         }
       ],
-      [
+      [        {
+        "viewIndex": 6,
+        "compId": 0,
+        "defautChoice": "",
+        "imgFileName": "v6_sconstants.png"
+      },
         {
           "viewIndex": 6,
           "compId": 1,
@@ -876,7 +908,12 @@ var initState={
           "imgFileName": "v6_sg24.png"
         }
       ],
-      [
+      [        {
+        "viewIndex": 7,
+        "compId": 0,
+        "defautChoice": "",
+        "imgFileName": "v7_sconstants.png"
+      },
         {
           "viewIndex": 7,
           "compId": 1,
