@@ -1,8 +1,11 @@
+//定义视图管理器中的原始只读数据，包括三部分，图片的canvas，图片非零值的区域和非零值的序列；
 export interface imgData {
     imgCanvas: HTMLCanvasElement,
     loc: number[],
     val: number[]
 }
+
+//提取已经下载的图片的数据信息，传入一个图像对象，返回imgData；
 function extractImgData(img: HTMLImageElement): imgData {
     let imgCanvas: HTMLCanvasElement = document.createElement("canvas");
     let loc: number[] = [];
@@ -41,6 +44,8 @@ function extractImgData(img: HTMLImageElement): imgData {
     return { imgCanvas, loc, val }
 }
 
+//根据传入的图片文件名下载图片，提取并返回该图片的imgData信息；
+//函数的返回值是promise，imgData由该promise传出，可用then或await捕获；
 async function getImageData(imgFileName: string): Promise<imgData> {
     return new Promise(
         (resolve) => {
@@ -52,6 +57,7 @@ async function getImageData(imgFileName: string): Promise<imgData> {
         })
 }
 
+//将Canvas染色，传入该canvas对应的imgData和目标颜色，返回染好色的canvas
 function changeCanvasColor(originalCanvasData: imgData, colorCode: string):HTMLCanvasElement {
     let { redMap, greenMap, blueMap } = getColorMap(colorCode);
     let { imgCanvas, loc, val } = originalCanvasData;
@@ -84,6 +90,8 @@ function changeCanvasColor(originalCanvasData: imgData, colorCode: string):HTMLC
 
 }
 
+//原始灰度值与目标颜色的对应关系；
+//染色通过混合原始灰度与目标颜色而得到最终的颜色值
 function getColorMap(colorCode: string) :{redMap:number[],greenMap:number[],blueMap:number[]}{
     let colorMapCache = {};
     if (colorCode in colorMapCache) {
@@ -105,6 +113,7 @@ function getColorMap(colorCode: string) :{redMap:number[],greenMap:number[],blue
 
 }
 
+//将#aabbcc的颜色代码转换成rgb
 function getParsedColor(colorCode: string): { r: number, g: number, b: number } {
     return {
         r: parseInt(colorCode.substring(1, 3), 16),
@@ -112,6 +121,8 @@ function getParsedColor(colorCode: string): { r: number, g: number, b: number } 
         b: parseInt(colorCode.substring(5, 7), 16),
     }
 }
+
+//染色算法
 function colorizeChannel(base, blend) {
     const baseRatio = base / 255;
     const blendRatio = blend / 255;
