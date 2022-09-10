@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let initialState="loading";
+let initialState:string="loading";
 
 const loadingStatusSlice=createSlice({
     name:'loadingStatus',
@@ -8,6 +8,7 @@ const loadingStatusSlice=createSlice({
     reducers:{
         changeLoadingStatus(state){
             state="loaded";
+
             return state;
         }
     }

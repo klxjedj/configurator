@@ -1,4 +1,5 @@
 //定义视图管理器中的原始只读数据，包括三部分，图片的canvas，图片非零值的区域和非零值的序列；
+import axios from "axios"
 export interface imgData {
     imgCanvas: HTMLCanvasElement,
     loc: number[],
@@ -50,26 +51,31 @@ async function getImageData(imgFileName: string): Promise<imgData> {
     return new Promise(
         (resolve) => {
             let img: HTMLImageElement = new Image();
-            img.src = `/${imgFileName}`;
-            img.onload = () => {
-                resolve(extractImgData(img))
+            img.onload = (e) => {
+                resolve(extractImgData(img));
             }
+            img.src = `/${imgFileName}`;
+            if(img.complete){
+                resolve(extractImgData(img));
+            }
+
+
         })
 }
 
 //将Canvas染色，传入该canvas对应的imgData和目标颜色，返回染好色的canvas
-function changeCanvasColor(originalCanvasData: imgData, colorCode: string):HTMLCanvasElement {
+function changeCanvasColor(originalCanvasData: imgData, colorCode: string): HTMLCanvasElement {
     let { redMap, greenMap, blueMap } = getColorMap(colorCode);
     let { imgCanvas, loc, val } = originalCanvasData;
-    console.log(imgCanvas,originalCanvasData);
-    
+    // console.log(imgCanvas,originalCanvasData);
+
     let originImgData = imgCanvas.getContext('2d')?.getImageData(0, 0, 900, 900);
     let newCanvas = document.createElement('canvas');
-    newCanvas.height=900;
-    newCanvas.width=900;
-    let newCanvasCtx=newCanvas.getContext('2d')
-    newCanvasCtx!.putImageData(originImgData!,0,0);
-    let newCanvasData=newCanvasCtx?.getImageData(0,0,900,900);
+    newCanvas.height = 900;
+    newCanvas.width = 900;
+    let newCanvasCtx = newCanvas.getContext('2d')
+    newCanvasCtx!.putImageData(originImgData!, 0, 0);
+    let newCanvasData = newCanvasCtx?.getImageData(0, 0, 900, 900);
     let pixelCounter = 0;
     for (let i = 0; i < loc.length;) {
         let [rangeStart, rangeEnd] = [loc[i], loc[i + 1]];
@@ -85,14 +91,14 @@ function changeCanvasColor(originalCanvasData: imgData, colorCode: string):HTMLC
             j += 2;
         }
     }
-    newCanvasCtx?.putImageData(newCanvasData!,0,0);
+    newCanvasCtx?.putImageData(newCanvasData!, 0, 0);
     return newCanvas;
 
 }
 
 //原始灰度值与目标颜色的对应关系；
 //染色通过混合原始灰度与目标颜色而得到最终的颜色值
-function getColorMap(colorCode: string) :{redMap:number[],greenMap:number[],blueMap:number[]}{
+function getColorMap(colorCode: string): { redMap: number[], greenMap: number[], blueMap: number[] } {
     let colorMapCache = {};
     if (colorCode in colorMapCache) {
         return colorMapCache[colorCode]
@@ -116,9 +122,9 @@ function getColorMap(colorCode: string) :{redMap:number[],greenMap:number[],blue
 //将#aabbcc的颜色代码转换成rgb
 function getParsedColor(colorCode: string): { r: number, g: number, b: number } {
     return {
-        r: parseInt(colorCode.substring(1, 3), 16),
-        g: parseInt(colorCode.substring(3, 5), 16),
-        b: parseInt(colorCode.substring(5, 7), 16),
+        r: parseInt(colorCode.substring(0, 2), 16),
+        g: parseInt(colorCode.substring(2, 4), 16),
+        b: parseInt(colorCode.substring(4, 6), 16),
     }
 }
 

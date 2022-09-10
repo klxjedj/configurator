@@ -1,83 +1,113 @@
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { switchToNextView } from "../../store/slices/viewSlice";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 import configuratorViewManager from "./vewManager/viewManager";
 import { store } from "../../store/store";
-import { changeLoadingStatus } from "../../store/slices/loadingStatusSlice";
+import { attrSelected } from "../../store/slices/attrSlice";
+import { optionSelected } from "../../store/slices/optionSlice";
+import loadingStatusSlice, { changeLoadingStatus } from "../../store/slices/loadingStatusSlice";
+import { MaxView } from "../../store/Constant";
+import "./configurator.css"
 
-export enum Color {
-    A = '#aa0000',
-    B = '#00aa00',
-}
+const attrData = window.initState['attrData']
 
-const colorList = ['#aa0000', '#00aa00', '#0000aa', '#aa00aa', '#aaaa00', '#00aaaa', '#aaaaaa']
 let viewManager = new configuratorViewManager();
 
 const s = async () => {
     await viewManager.initialize();
     store.dispatch(changeLoadingStatus())
 };
+
 s();
+
 
 export function Configure() {
 
+
+
     const currentView = useAppSelector((state) => state.view);
+    const currentAttr: number | null = useAppSelector((state) => state.selectedAttr);
+    const currentOption = useAppSelector((state) => state.selectedOption)
     const currentLoadingStatus = useAppSelector((state) => state.loadingStatus)
     const config = useAppSelector((state) => state.config);
-
-    const myCanvas = useRef<null | HTMLCanvasElement>(null);
-
     const dispatch = useAppDispatch()
+    const canvasDiv = useRef(null);
+    const displaycurrentOption = useRef(null);
+    const myCanvasDiv = canvasDiv.current! as HTMLDivElement;
 
-    let currentColor = colorList[currentView - 1];
 
-    const nextView = (e) => {
-        let colorChangedCanvas = viewManager.getColorChangedCompCanvas(1, currentColor)[1];
-        let imgData = colorChangedCanvas.getContext('2d')?.getImageData(0, 0, 900, 900)
-        const myCanvasCtx = myCanvas.current!.getContext('2d');
+ 
 
-        myCanvasCtx!.putImageData(imgData!, 0, 0);
-        dispatch(switchToNextView())
-    }
 
+
+
+
+
+    //初始化canvas
     useEffect(() => {
+        if (myCanvasDiv) {
+            console.log(myCanvasDiv)
+            console.log(myCanvasDiv.children)
+            if (currentLoadingStatus !== 'loading') {
+                let canvasList = myCanvasDiv.children;
+                for (let i = 0; i <= MaxView; i++) {
+                    let canvasCtx = (canvasList[i] as HTMLCanvasElement).getContext('2d');
+                    canvasCtx?.drawImage(viewManager.getViewCanvas(i), 0, 0);
+                }
+            }
+        }
     }, [currentLoadingStatus]);
 
+
+    //通过滑动切换view，取决于bootstrap中相应组件如何定义，不一定使用此副作用
     useEffect(() => {
+    }, [currentView])
+
+    // 染色程序；
+    useEffect(() => {
+        (displaycurrentOption.current! as HTMLDivElement).innerHTML = "";
+
         if (currentLoadingStatus !== "loading") {
 
-            console.log(currentLoadingStatus)
-            const myCanvasCtx = myCanvas.current!.getContext('2d');
-            myCanvasCtx?.drawImage(viewManager.getViewCanvas(currentView), 0, 0);
+            console.log("configurator currentAttrIndex:", currentAttr);
+            console.log("configurator currentOptionIndex:", currentOption);
+            let canvasList = myCanvasDiv.children;
+            for (let compId in attrData[currentAttr]["options"][currentOption]["config"]) {
+                let colorCode = attrData[currentAttr]["options"][currentOption]["config"][compId]
+                for (let i = 0; i <= MaxView; i++) {
 
-            let currentColorizedView = viewManager.getColorChangedCompCanvas(1, currentColor)[currentView];
-            myCanvasCtx?.drawImage(currentColorizedView, 0, 0);
+                    let currentColorizedView = viewManager.getColorChangedCompCanvasView(parseInt(compId), i, colorCode);
+                    // (displaycurrentOption.current! as HTMLDivElement).appendChild(currentColorizedView[0])
+                    if (i == 0) {
+                        (displaycurrentOption.current! as HTMLDivElement).appendChild(currentColorizedView)
 
-            // let imgData=currentColorizedView.getContext('2d')?.getImageData(0,0,900,900);
-            // myCanvasCtx?.putImageData(imgData!,0,0);
-
-            // let imgData=viewManager.getImgData();
-            // imgData![currentView].map((compData)=>{
-            //     document.body.appendChild(compData.imgCanvas);
-            //     return 
-            // })
-
-            // let originViewData = viewManager.getViewCanvas(currentView).getContext('2d')?.getImageData(0, 0, 900, 900);
-
-            // myCanvasCtx!.putImageData(originViewData!, 0, 0)
+                    }
+                    let canvasCtx = (canvasList[i] as HTMLCanvasElement).getContext('2d');
+                    canvasCtx?.drawImage(currentColorizedView, 0, 0);
+                }
+            }
         }
+    }, [currentOption,currentAttr])
 
-    }, [currentLoadingStatus, currentView,currentColor])
-
-    return currentLoadingStatus === "loading" ? <div>Loading...</div> : ((
+    return ((
         <div>
-            <div >current view: {currentColor}</div>
-            <div style={{ backgroundColor: currentColor }}>config:{
-                Object.keys(config).map(
-                    (key) =>
-                        <p key={key}>{key}:{config[key]}</p>)} </div>
-            <div><button onClick={nextView}>Next View</button></div>
-            <div><canvas ref={myCanvas} width={900} height={900} /></div>
+            <div ref={displaycurrentOption} ></div>
+            <hr></hr>
+            <div style={{ display: currentLoadingStatus === "loading" ? "none" : "inherit" }} ref={canvasDiv}>
+
+
+                <canvas key={1} width={900} height={900} />
+                <canvas key={2} width={900} height={900} />
+                <canvas key={3} width={900} height={900} />
+                <canvas key={4} width={900} height={900} />
+                <canvas key={5} width={900} height={900} />
+                <canvas key={6} width={900} height={900} />
+                <canvas key={7} width={900} height={900} />
+            </div>
+            {currentLoadingStatus === "loading" ? <div>Loading</div> : null}
+            <div>current Loading Status:{currentLoadingStatus}</div>
+            <div>selected attr:{currentAttr}</div>
+            <div>current option:{currentOption}</div>
         </div>));
 }
 

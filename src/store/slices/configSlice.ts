@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {COMP,COLOR} from "../Constant"
 
 interface configState{
     [prop:string]:string
