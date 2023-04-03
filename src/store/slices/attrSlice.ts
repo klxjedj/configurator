@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let initialState=2;
+let initialState=null;
 
 const attrSlice=createSlice({
     name:'selectedAttr',

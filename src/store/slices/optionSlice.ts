@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let initialState=2;
+let initialState=null;
 
 const optionSlice=createSlice({
     name:'selectedOption',

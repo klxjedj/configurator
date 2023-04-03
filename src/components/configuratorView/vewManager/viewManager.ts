@@ -1,83 +1,54 @@
-import { getImageData } from "./imgUtility";
-import { imgData, changeCanvasColor } from "./imgUtility";
+import { getColorMap } from "./imgUtility";
+
 
 
 class configuratorViewManager {
 
-    private imgData: imgData[][] | null = null
-    private viewCanvasList: HTMLCanvasElement[] | null = null;
-
-    //返回所有图片数据
-    public getImgData(): imgData[][] | null {
-        return this.imgData;
-    }
-
-    //返回指定视图的合成canvas
-    public getViewCanvas(viewIndex: number): HTMLCanvasElement {
-        return this.viewCanvasList![viewIndex]
-    }
-
-    //返回所有视图的canvas列表；
-    public getViewCanvasList(): HTMLCanvasElement[] {
-        return this.viewCanvasList!;
-    }
-
-    //初始化任务构建
-    private constructPromiseTask(): Promise<imgData[]>[] {
-        let taskCollection: Promise<imgData>[][] = []
-        for (let i = 0; i < window.initState["viewData"].length; i++) {
-            let taskList: Promise<imgData>[] = []
-            for (let j = 0; j < window.initState["viewData"][0].length; j++) {
-                taskList.push(getImageData('nikeid/' + window.initState['viewData'][i][j]['imgFileName']))
-
-            }
-            taskCollection.push(taskList)
-        }
-        let pList: Promise<imgData[]>[] = []
-        for (let i = 0; i < taskCollection.length; i++) {
-            let p = new Promise<Array<imgData>>((resolve) => {
-                Promise.all(taskCollection[i]).then((res) => {
-                    resolve(res);
-                })
-
-            })
-            pList.push(p);
-
-        }
-        return pList;
-    }
-
-    //执行初始化任务
-    public initialize() {
-        return Promise.all(this.constructPromiseTask()).then((res) => {
-            this.imgData = res;
-            this.viewCanvasList = this.imgData.map((viewData) => {
-                return this.getMergedViewCanvas(viewData)
-            })
-            console.log('initialization finished')
-            return res
-        })
-    }
-
-    //对特定comp的所有视图进行染色，返回染色的canvas视图列表
-    public getColorChangedCompCanvasView(compId: number, viewIndex: number, colorCode: string): HTMLCanvasElement {
-
-        return changeCanvasColor(this.imgData![viewIndex][compId], colorCode);
-
-
-    }
-
-    //利用视图数据数组中的imgdata生成合成的视图canvas
-    private getMergedViewCanvas(viewData): HTMLCanvasElement {
+    //绘制指定视图的合成画布
+    public getViewCanvas(viewIndex): HTMLCanvasElement {
         let viewCanvas = document.createElement('canvas');
         viewCanvas.width = 900;
         viewCanvas.height = 900;
-        let viewCanvasCtx = viewCanvas.getContext('2d')
-        viewData.map((compData) => {
-            viewCanvasCtx!.drawImage(compData.imgCanvas, 0, 0);
-            return null
-        })
+
+        let ctx = viewCanvas.getContext('2d');
+        for (let compIndex in window.imgLocation[viewIndex])
+            ctx?.drawImage(this.getCompCanvas(viewIndex, compIndex), 0, 0)
+
         return viewCanvas
+    }
+
+    //将指定视图的部件还原为canvas图片
+    public getCompCanvas(viewIndex, compIndex, colorCode:string|null= null): HTMLCanvasElement {
+        
+
+        let { redMap, greenMap, blueMap } =colorCode? getColorMap(colorCode):{redMap:null,greenMap:null,blueMap:null};
+
+        let compCanvas = document.createElement('canvas')
+        compCanvas.width = 900;
+        compCanvas.height = 900;
+        let ctx = compCanvas.getContext('2d');
+        let data = ctx!.getImageData(0, 0, 900, 900);
+        let currentImgLocData = window.imgLocation[viewIndex][compIndex];
+        let currentImgValData = window.imgValue[viewIndex][compIndex]
+        let currentImgAlfData = window.imgAlpha[viewIndex][compIndex]
+        for (let i = 0; i < currentImgLocData.length; i++) {
+            let location = currentImgLocData[i] * 4;
+            data.data[location] = colorCode ? redMap![currentImgValData[i]] : currentImgValData[i]
+            data.data[location + 1] = colorCode ? greenMap![currentImgValData[i]] : currentImgValData[i]
+            data.data[location + 2] = colorCode ? blueMap![currentImgValData[i]] : currentImgValData[i]
+            data.data[location + 3] = currentImgAlfData[i]
+        }
+
+        ctx!.putImageData(data, 0, 0)
+        return compCanvas
+    }
+
+    //对特定comp的所有视图进行染色，返回染色的canvas视图列表
+    public getColorizedCompCanvas(compId: number, viewIndex: number, colorCode: string): HTMLCanvasElement {
+
+        return this.getCompCanvas(viewIndex, compId, colorCode);
+
+
     }
 }
 

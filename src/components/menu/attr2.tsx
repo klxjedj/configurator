@@ -1,0 +1,63 @@
+import { useRef } from 'react';
+import Col from 'react-bootstrap/Col';
+import axios from 'axios';
+
+import { attrSelected } from '../../store/slices/attrSlice';
+import { optionSelected } from '../../store/slices/optionSlice';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+
+
+export function Attr(prop) {
+    const currentAttr: number | null = useAppSelector((state) => state.selectedAttr);
+    let dispatch = useAppDispatch();
+    let icon = useRef(null);
+    let { attrIndex, attrName, src: imgSrc, vertical } = prop;
+    let active = (attrIndex == currentAttr) ? 'active' : '';
+    let controllerPlace = vertical ? '' : 'flex-column';
+    console.log(`vertical?:${vertical}`)
+
+    let selectAttr = (e) => {
+        console.log(attrIndex);
+        if (active) {
+            axios.put('./api/action',{
+                userTel:window.tel,
+                timestamp:Date.now(),
+                actionType:'attrCancel',
+                targetIndex:attrIndex,
+                currentAttr:currentAttr
+
+            });
+            dispatch(attrSelected(null));
+            dispatch(optionSelected(null));
+        }
+        else {
+
+            axios.put('./api/action',{
+                userTel:window.tel,
+                timestamp:Date.now(),
+                actionType:'attrSelect',
+                targetIndex:attrIndex,
+                currentAttr:currentAttr
+
+            });
+            dispatch(attrSelected(attrIndex));
+            dispatch(optionSelected(null));
+        }
+    }
+
+    return (
+
+
+        <div
+            ref={icon}
+            className={`attrIcon d-flex align-items-center justify-content-evenly ${active}`}
+            onClick={selectAttr}
+        >
+            {/* <img src={`nikeid/${imgSrc}`} ></img> */}
+            <div className={'d-flex text-center align-items-center justify-content-center'}>{attrName}</div>
+        </div>
+
+    )
+
+
+}

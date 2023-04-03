@@ -1,0 +1,186 @@
+@import '../node_modules/bootstrap/scss/functions';
+
+$offcanvas-vertical-height: 34vw;
+$offcanvas-horizontal-width: 32vw;
+
+@import "../node_modules/bootstrap/scss/variables";
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+
+@media (orientation:landscape) {
+
+    #canvasDiv {
+        max-width: 90vh;
+    }
+
+    .menuContainer,
+    .optionContainer {
+        height: 90vh;
+        justify-content: center;
+    }
+
+    // .menu{
+    //     height:100vh;
+    // }
+    .optionContainer {
+        flex-shrink: 0;
+    }
+
+    // .attrIcon2,.optionIcon2,.choiceBoard2{
+    //     height:12vw;
+    //     width:12vw;
+    //     background-color:#eee;
+    //  }
+    //图标按钮设置
+    .attrIcon,
+    .optionIcon {
+        height: 16vh;
+        width: 16vh;
+        background-color: #eee;
+    }
+
+    .attrIcon img,
+    .option,
+    .optionIcon img,
+    .attrIcon div,
+    .optionIcon div {
+        width: 12vh;
+        height: 12vh;
+    }
+
+    // .attrIcon2 img,.option2,.optionIcon2 img{
+    //     width:8vw;
+    //     height:8vw;
+    // }
+
+    .ratioIcon {
+        width: 16vh;
+        height: 16vh;
+    }
+
+    .ratio5 {
+        --ratioSize: 12vh;
+        width: var(--ratioSize);
+        height: var(--ratioSize);
+        border-radius: calc(var(--ratioSize)/2)
+    }
+
+    .ratio5.active {
+        background-color: #000;
+    }
+
+    .ratio6 {
+        --ratioSize: 3vh;
+        width: var(--ratioSize);
+        height: var(--ratioSize);
+        border-radius: calc(var(--ratioSize)/2)
+    }
+
+    .ratio6.active {
+        background-color: #000;
+    }
+
+
+}
+
+@media (orientation:portrait) {
+
+    // .menuContainer{
+    //     width:100vw;
+    // }
+    .menu {
+        height: auto;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        gap: $spacer*.25;
+    }
+
+    .attrIcon,
+    .attrContainer,
+    .optionContainer,
+    .optionIcon {
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    // .attrIcon2,.optionIcon2,.choiceBoard2{
+    //     height:16vw;
+    //     width:16vw;
+    //     background-color:#eee;
+    //  }
+    //图标按钮设置
+    .attrIcon,
+    .optionIcon {
+        height: 16vw;
+        width: 16vw;
+        background-color: #eee;
+    }
+
+    .attrIcon img,
+    .option,
+    .optionIcon img,
+    .attrIcon div,
+    .optionIcon div {
+        width: 12vw;
+        height: 12vw;
+    }
+
+    .attrIcon div,
+    .optionIcon div{
+        font-size:1rem;
+        line-height: 1.1rem;
+    }
+
+    // .attrIcon2 img,.option2,.optionIcon2 img{
+    //     width:8vw;
+    //     height:8vw;
+    // }
+
+    .ratioIcon {
+        width: 16vw;
+        height: 16vw;
+    }
+
+    .ratio5 {
+        --ratioSize: 12vw;
+        width: var(--ratioSize);
+        height: var(--ratioSize);
+        border-radius: calc(var(--ratioSize)/2)
+    }
+
+    .ratio5.active {
+        background-color: #000;
+    }
+
+    .ratio6 {
+        --ratioSize: 3vw;
+        width: var(--ratioSize);
+        height: var(--ratioSize);
+        border-radius: calc(var(--ratioSize)/2)
+    }
+
+    .ratio6.active {
+        background-color: #000;
+    }
+
+}
+
+//基本设置
+.container {
+    max-height: 100vh;
+}
+
+canvas {
+    width: 100%;
+
+}
+
+div {
+    overflow: auto;
+}
+
+div.active {
+    background-color: #ddd;
+}

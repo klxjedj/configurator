@@ -1,39 +1,63 @@
-import { useAppDispatch } from '../../store/hooks';
+import { useRef } from 'react';
+import Col from 'react-bootstrap/Col';
+import axios from 'axios';
+
+import { attrSelected } from '../../store/slices/attrSlice';
 import { optionSelected } from '../../store/slices/optionSlice';
-import { Option } from './option'
-import "./attr.css";
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-interface AttrProp {
-    attrName: string;
-    src: string | null
-    attrIndex: number
-}
 
-export function Attr(prop: AttrProp) {
-    let { attrIndex, attrName, src:imgSrc } = prop;
-    // let dispatch = useAppDispatch()
-    // let selectAttr = (e) => {
-    //     console.log(attrIndex)
-    //     dispatch(optionSelected(attrIndex))
+export function Attr(prop) {
+    const currentAttr: number | null = useAppSelector((state) => state.selectedAttr);
+    let dispatch = useAppDispatch();
+    let icon = useRef(null);
+    let { attrIndex, attrName, src: imgSrc, vertical } = prop;
+    let active = (attrIndex == currentAttr) ? 'active' : '';
+    let controllerPlace = vertical ? '' : 'flex-column';
+    console.log(`vertical?:${vertical}`)
 
-    // }
+    let selectAttr = (e) => {
+        console.log(attrIndex);
+        if (active) {
+            axios.put('./api/action',{
+                userTel:window.tel,
+                timestamp:Date.now(),
+                actionType:'attrCancel',
+                targetIndex:attrIndex,
+                currentAttr:currentAttr
 
+            });
+            dispatch(attrSelected(null));
+            dispatch(optionSelected(null));
+        }
+        else {
+
+            axios.put('./api/action',{
+                userTel:window.tel,
+                timestamp:Date.now(),
+                actionType:'attrSelect',
+                targetIndex:attrIndex,
+                currentAttr:currentAttr
+
+            });
+            dispatch(attrSelected(attrIndex));
+            dispatch(optionSelected(null));
+        }
+    }
 
     return (
-        <div >
 
-            <div >
-                <div className='attrClassName'>{attrName}</div>
-                <div className='attrIcon'><img src={`nikeid/${imgSrc}`} ></img></div>
-                <div className='options'>
-                {window.initState['attrData'][attrIndex]['options'].map((option) => (
-                    <Option {...{...option,attrIndex}} key={option.optionIndex}></Option>
-                ))}
-            </div>
 
-            </div>
+        <div
+            ref={icon}
+            className={`attrIcon d-flex align-items-center justify-content-evenly ${active}`}
+            onClick={selectAttr}
+        >
+            <img src={`nikeid/${imgSrc}`} ></img>
+            {/* {attrName} */}
+        </div>
 
-        </div>)
+    )
 
 
 }

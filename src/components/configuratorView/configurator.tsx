@@ -1,114 +1,87 @@
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { switchToNextView } from "../../store/slices/viewSlice";
-import { useEffect, useRef, useLayoutEffect } from "react";
+import axios from "axios";
+import { switchToView } from "../../store/slices/viewSlice";
+import { useEffect } from "react";
 import configuratorViewManager from "./vewManager/viewManager";
-import { store } from "../../store/store";
-import { attrSelected } from "../../store/slices/attrSlice";
-import { optionSelected } from "../../store/slices/optionSlice";
-import loadingStatusSlice, { changeLoadingStatus } from "../../store/slices/loadingStatusSlice";
 import { MaxView } from "../../store/Constant";
 import "./configurator.css"
+import Carousel from "react-bootstrap/Carousel"
 
-const attrData = window.initState['attrData']
 
 let viewManager = new configuratorViewManager();
+window.viewManager = viewManager
 
-const s = async () => {
-    await viewManager.initialize();
-    store.dispatch(changeLoadingStatus())
-};
-
-s();
-
-
-export function Configure() {
-
-
+export function Configure(props) {
+    let {loaded}=props
 
     const currentView = useAppSelector((state) => state.view);
     const currentAttr: number | null = useAppSelector((state) => state.selectedAttr);
     const currentOption = useAppSelector((state) => state.selectedOption)
-    const currentLoadingStatus = useAppSelector((state) => state.loadingStatus)
-    const config = useAppSelector((state) => state.config);
     const dispatch = useAppDispatch()
-    const canvasDiv = useRef(null);
-    const displaycurrentOption = useRef(null);
-    const myCanvasDiv = canvasDiv.current! as HTMLDivElement;
 
+    function viewSelected(viewIndex) {
+        axios.put('./api/action', {
+            userTel: window.tel,
+            timestamp: Date.now(),
+            actionType: 'viewSelect',
+            targetIndex: viewIndex
+        });
+        dispatch(switchToView(viewIndex));
 
- 
+    }
 
-
-
-
-
-
-    //初始化canvas
+    // //初始化canvas
     useEffect(() => {
-        if (myCanvasDiv) {
-            console.log(myCanvasDiv)
-            console.log(myCanvasDiv.children)
-            if (currentLoadingStatus !== 'loading') {
-                let canvasList = myCanvasDiv.children;
-                for (let i = 0; i <= MaxView; i++) {
-                    let canvasCtx = (canvasList[i] as HTMLCanvasElement).getContext('2d');
-                    canvasCtx?.drawImage(viewManager.getViewCanvas(i), 0, 0);
-                }
+        if (loaded) {
+            // let myCanvasDiv = document.getElementById('canvasDiv');
+
+            // let canvasList = myCanvasDiv!.children;
+            let canvasList = document.getElementsByClassName("myCanvas");
+            for (let i = 0; i <= MaxView; i++) {
+                let canvasCtx = (canvasList[i] as HTMLCanvasElement).getContext('2d');
+                canvasCtx!.drawImage(viewManager.getViewCanvas(i + 1), 0, 0);
             }
         }
-    }, [currentLoadingStatus]);
+    }, []);
 
-
-    //通过滑动切换view，取决于bootstrap中相应组件如何定义，不一定使用此副作用
+    // // 染色程序；
     useEffect(() => {
-    }, [currentView])
+        const attrData = window.initState['attrData']
 
-    // 染色程序；
-    useEffect(() => {
-        (displaycurrentOption.current! as HTMLDivElement).innerHTML = "";
-
-        if (currentLoadingStatus !== "loading") {
-
-            console.log("configurator currentAttrIndex:", currentAttr);
-            console.log("configurator currentOptionIndex:", currentOption);
-            let canvasList = myCanvasDiv.children;
+        let canvasList = document.getElementsByClassName('myCanvas');
+        if (currentAttr !== null && currentOption !== null) {
             for (let compId in attrData[currentAttr]["options"][currentOption]["config"]) {
                 let colorCode = attrData[currentAttr]["options"][currentOption]["config"][compId]
                 for (let i = 0; i <= MaxView; i++) {
 
-                    let currentColorizedView = viewManager.getColorChangedCompCanvasView(parseInt(compId), i, colorCode);
-                    // (displaycurrentOption.current! as HTMLDivElement).appendChild(currentColorizedView[0])
-                    if (i == 0) {
-                        (displaycurrentOption.current! as HTMLDivElement).appendChild(currentColorizedView)
+                    let currentColorizedView = viewManager.getColorizedCompCanvas(parseInt(compId), i + 1, colorCode);
 
-                    }
                     let canvasCtx = (canvasList[i] as HTMLCanvasElement).getContext('2d');
                     canvasCtx?.drawImage(currentColorizedView, 0, 0);
                 }
             }
         }
-    }, [currentOption,currentAttr])
 
-    return ((
-        <div>
-            <div ref={displaycurrentOption} ></div>
-            <hr></hr>
-            <div style={{ display: currentLoadingStatus === "loading" ? "none" : "inherit" }} ref={canvasDiv}>
+    }, [currentOption, currentAttr])
 
-
-                <canvas key={1} width={900} height={900} />
-                <canvas key={2} width={900} height={900} />
-                <canvas key={3} width={900} height={900} />
-                <canvas key={4} width={900} height={900} />
-                <canvas key={5} width={900} height={900} />
-                <canvas key={6} width={900} height={900} />
-                <canvas key={7} width={900} height={900} />
-            </div>
-            {currentLoadingStatus === "loading" ? <div>Loading</div> : null}
-            <div>current Loading Status:{currentLoadingStatus}</div>
-            <div>selected attr:{currentAttr}</div>
-            <div>current option:{currentOption}</div>
-        </div>));
+    return (
+        <Carousel id='canvasDiv'
+            activeIndex={currentView}
+            onSelect={viewSelected}
+            slide={false}
+            variant='dark'
+            indicatorLabels={['1', '2', '3', '4', '5', '6', '7']}
+            indicators={true}
+            interval={null}>
+            <Carousel.Item><canvas className="myCanvas" key={1} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={2} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={3} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={4} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={5} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={6} width={900} height={900} /></Carousel.Item>
+            <Carousel.Item><canvas className="myCanvas" key={7} width={900} height={900} /></Carousel.Item>
+        </Carousel>
+    );
 }
 
 

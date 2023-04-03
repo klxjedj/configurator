@@ -1063,81 +1063,86 @@ var initState = {
   "attrData": [
     {
       "attrIndex": 0,
-      "attrName": "主要部分",
+      "attrName": "鞋面",
       "src": 'comp1.png',
       "options": [
         {
           "optionIndex": 0,
-          "optionColorName": "油灰/米白",
-          "src": "component1_1.jpg",
+          "optionColorName": "油灰",
+          "src": "component1_7.jpg",
           "config": {
-            "1": "FEFEF9",
-            "2": "302f31",
+            "1": "3a373a",
             "3": "2D2E30",
             "4": "3a373a",
-            "5": "4F4A4F"
+            "5": "3a373a"
           }
         },
         {
           "optionIndex": 1,
-          "optionColorName": "米白/油灰",
-          "src": "component1_2.jpg",
+          "optionColorName": "米白",
+          "src": "component1_8.jpg",
           "config": {
-            "1": "302f31",
-            "2": "FDFBF4",
+            "1": "F3F1EC",
             "3": "F3F3EC",
             "4": "f0f0f0",
-            "5": "4F4A4F"
+            "5": "f0f0f0"
           }
         },
         {
           "optionIndex": 2,
-          "optionColorName": "明黄/油灰",
-          "src": "component1_3.jpg",
+          "optionColorName": "灰桃红",
+          "src": "component1_9.jpg",
           "config": {
-            "1": "302f31",
-            "2": "CDF53F",
-            "3": "CDF53F",
-            "4": "C6F129",
-            "5": "4F4A4F"
+            "1": "A55449",
+            "3": "8f5649",
+            "4": "8f5649",
+            "5": "8f5649"
           }
         },
         {
           "optionIndex": 3,
-          "optionColorName": "清透蓝/米白",
-          "src": "component1_4.jpg",
+          "optionColorName": "淡香草黄",
+          "src": "component1_10.jpg",
           "config": {
-            "1": "FEFEF9",
-            "2": "0066B7",
-            "3": "0063a9",
-            "4": "005490",
-            "5": "4F4A4F"
+            "1": "DBCA90",
+            "3": "DBC785",
+            "4": "F1E0A6",
+            "5": "f9e4cf"
           }
         },
         {
           "optionIndex": 4,
-          "optionColorName": "阿马里洛黄/油灰",
-          "src": "component1_5.jpg",
+          "optionColorName": "苔藓色",
+          "src": "component1_11.jpg",
           "config": {
-            "1": "302f31",
-            "2": "FFDD45",
-            "3": "ffd23f",
-            "4": "FFCD47",
-            "5": "4F4A4F"
+            "1": "7C7C2B",
+            "3": "8a7e33",
+            "4": "8a7e33",
+            "5": "8a7e33"
           }
         },
         {
           "optionIndex": 5,
-          "optionColorName": "草皮橙/米白",
-          "src": "component1_6.jpg",
+          "optionColorName": "戟叶绿",
+          "src": "component1_12.jpg",
           "config": {
-            "1": "FEFEF9",
-            "2": "e25b3d",
-            "3": "ff6c52",
-            "4": "fe7457",
-            "5": "4F4A4F"
+            "1": "4B605E",
+            "3": "163e44",
+            "4": "163e44",
+            "5": "506665"
           }
         },
+        {
+          "optionIndex": 6,
+          "optionColorName": "雾杉木绿",
+          "src": "component1_13.jpg",
+          "config": {
+            "1": "B7B6A4",
+            "3": "a3a497",
+            "4": "a3a497",
+            "5": "a3a497"
+          }
+        }
       ]
     },
     {
@@ -1301,7 +1306,7 @@ var initState = {
     },
     {
       "attrIndex": 3,
-      "attrName": "鞋眼内接片",
+      "attrName": "鞋眼内片",
       "src": 'comp4.png',
       "options": [
 
@@ -1465,7 +1470,7 @@ var initState = {
         },
         {
           "optionIndex": 10,
-          "optionColorName": "阿马里洛黄",
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "FFCD47",
           "config": {
             "10": "FFCD47"
@@ -1567,7 +1572,7 @@ var initState = {
     },
     {
       "attrIndex": 6,
-      "attrName": "Swoosh",
+      "attrName": "标识",
       "src": 'comp7.png',
       "options": [
         {
@@ -1664,7 +1669,7 @@ var initState = {
         },
         {
           "optionIndex": 10,
-          "optionColorName": "阿马里洛黄",
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "FFD93F",
           "code": "solid",
           "config": {
@@ -1688,18 +1693,9 @@ var initState = {
       "src": 'comp8.png',
 
       "options": [
+
         {
           "optionIndex": 0,
-          "pattern": "再生材质",
-          "optionColorName": "多色",
-          "src": "component8_1.jpg",
-          "code": "2toneG",
-          "config": {
-            'sg15': null
-          }
-        },
-        {
-          "optionIndex": 1,
           "optionColorName": "油灰",
           "optionColorCode": "302f31",
           "config": {
@@ -1707,7 +1703,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 2,
+          "optionIndex": 1,
           "optionColorName": "米白",
           "optionColorCode": "E8E6E1",
           "config": {
@@ -1715,7 +1711,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 3,
+          "optionIndex": 2,
           "optionColorName": "灰桃红",
           "optionColorCode": "8F5649",
           "config": {
@@ -1723,7 +1719,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 4,
+          "optionIndex": 3,
           "optionColorName": "淡香草黄",
           "optionColorCode": "DDCA8B",
           "config": {
@@ -1731,7 +1727,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 5,
+          "optionIndex": 4,
           "optionColorName": "苔藓色",
           "optionColorCode": "67691D",
           "config": {
@@ -1739,7 +1735,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 6,
+          "optionIndex": 5,
           "optionColorName": "戟叶绿",
           "optionColorCode": "495D5B",
           "config": {
@@ -1747,7 +1743,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 7,
+          "optionIndex": 6,
           "optionColorName": "明黄",
           "optionColorCode": "C8F94B",
           "config": {
@@ -1755,7 +1751,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 8,
+          "optionIndex": 7,
           "optionColorName": "雾杉木绿",
           "optionColorCode": "A3A497",
           "config": {
@@ -1763,7 +1759,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 9,
+          "optionIndex": 8,
           "optionColorName": "相片蓝",
           "optionColorCode": "0866A9",
           "config": {
@@ -1771,7 +1767,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 10,
+          "optionIndex": 9,
           "optionColorName": "莲花粉",
           "optionColorCode": "F990AB",
           "config": {
@@ -1779,15 +1775,15 @@ var initState = {
           }
         },
         {
-          "optionIndex": 11,
-          "optionColorName": "阿马里洛黄",
+          "optionIndex": 10,
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "ffd23f",
           "config": {
             "15": "ffd23f"
           }
         },
         {
-          "optionIndex": 12,
+          "optionIndex": 11,
           "optionColorName": "俱乐部金",
           "optionColorCode": "C9B66F",
           "config": {
@@ -1795,7 +1791,7 @@ var initState = {
           }
         },
         {
-          "optionIndex": 13,
+          "optionIndex": 12,
           "optionColorName": "草皮橙",
           "optionColorCode": "e2533d",
           "config": {
@@ -1875,7 +1871,7 @@ var initState = {
         },
         {
           "optionIndex": 8,
-          "optionColorName": "阿马里洛黄",
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "FFDD45",
           "config": {
             "24": "FFDD45"
@@ -1893,7 +1889,7 @@ var initState = {
     },
     {
       "attrIndex": 9,
-      "attrName": "足跟稳定器",
+      "attrName": "足跟",
       "src": 'comp10.png',
       "options": [
         {
@@ -1954,7 +1950,7 @@ var initState = {
         },
         {
           "optionIndex": 7,
-          "optionColorName": "阿马里洛黄",
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "FFDD45",
           "config": {
             "14": "FFDD45"
@@ -2080,7 +2076,7 @@ var initState = {
         },
         {
           "optionIndex": 7,
-          "optionColorName": "阿马里洛黄",
+          "optionColorName": "阿马洛黄",
           "optionColorCode": "ffd23f",
           "config": {
             "19": "ffd23f"
